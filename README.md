@@ -1,1 +1,1 @@
-My solutions to coding challenges from Project Euler.
+My solutions to coding problems from [Project Euler](https://projecteuler.net/about).
