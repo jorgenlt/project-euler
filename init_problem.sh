@@ -1,46 +1,91 @@
 #!/bin/bash
 
-# Check if exactly one argument is provided
-if [ "$#" -ne 1 ]; then
-  echo "Usage: $0 <number>"
+# Use flag -i|--i|-input|--input to create input.txt and set up index.js for input.
+
+# Initialize variables
+use_input=0
+num=""
+
+# Parse arguments
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+  -i | --i | -input | --input)
+    use_input=1
+    shift
+    ;;
+  *)
+    if [ -z "$num" ]; then
+      num="$1"
+    else
+      echo "Unexpected argument: $1"
+      exit 1
+    fi
+    shift
+    ;;
+  esac
+done
+
+# Check if a problem number was provided
+if [ -z "$num" ]; then
+  echo "Usage: $0 [-i|-input|--input] <problem number>"
   exit 1
 fi
 
-num="$1"
 dir_name="problem-$num"
 
-# Create the directory named "problem-<number>"
+# Create the directory
 mkdir "$dir_name"
 
 # Define the JavaScript content
-js_content='import { readFile } from "fs/promises";
+js_content='const solvePuzzle = () => {
+  
+};
 
-const parseInput = (input) => {};
+const main = () => {
+  try {
+    console.log(solvePuzzle());
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-const solvePuzzle = (input) => {};
+main();'
+
+js_content_input='import { readFile } from "fs/promises";
+
+const parseInput = (input) => {
+
+};
+
+const solvePuzzle = (input) => {
+
+};
 
 const main = async () => {
   try {
     const input = (await readFile("input.txt", "utf-8")).trim();
-    
     console.log(solvePuzzle(input));
   } catch (err) {
     console.error(err);
   }
 };
 
-main();
-'
+main();'
 
-# Create index.js with the defined content
-echo "$js_content" >"$dir_name/index.js"
+# Create index.js with the appropriate content based on the flag
+if [ "$use_input" -eq 1 ]; then
+  echo "$js_content_input" >"$dir_name/index.js"
+else
+  echo "$js_content" >"$dir_name/index.js"
+fi
 
-# Create a readme.md file with custom content (you can adjust the content as needed)
-readme_content="Problem $num"
+# Create README.md
 readme_content="[Problem $num](https://projecteuler.net/problem=$num)"
 echo "$readme_content" >"$dir_name/README.md"
 
-# Create an empty input.txt file
-touch "$dir_name/input.txt"
+# If the input flag is used, create an empty input.txt file
+if [ "$use_input" -eq 1 ]; then
+  touch "$dir_name/input.txt"
+fi
 
-echo "Folder '$dir_name' created with index.js, README.md, and input.txt."
+echo "Folder '$dir_name' created with index.js, README.md$([ "$use_input" -eq 1 ] && echo ', and input.txt.' || echo '.')"
