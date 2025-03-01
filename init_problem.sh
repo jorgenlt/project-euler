@@ -37,13 +37,13 @@ dir_name="problem-$num"
 mkdir "$dir_name"
 
 # Define the JavaScript content
-js_content='const solvePuzzle = () => {
+js_content='const solveProblem = () => {
   
 };
 
 const main = () => {
   try {
-    console.log(solvePuzzle());
+    console.log(solveProblem());
   } catch (err) {
     console.error(err);
   }
@@ -57,14 +57,14 @@ const parseInput = (input) => {
 
 };
 
-const solvePuzzle = (input) => {
+const solveProblem = (input) => {
 
 };
 
 const main = async () => {
   try {
     const input = (await readFile("input.txt", "utf-8")).trim();
-    console.log(solvePuzzle(input));
+    console.log(solveProblem(input));
   } catch (err) {
     console.error(err);
   }
